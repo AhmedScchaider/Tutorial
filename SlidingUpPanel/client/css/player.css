@@ -1,0 +1,226 @@
+/**
+* Copyright 2016 Nerdiex All rights reserved.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
+
+
+*{
+    padding:0px;
+    margin:0px;
+    font-family:san-serif;
+    font-size:24px;
+}
+html,body{
+    background-color: #757575;
+}
+a{
+    text-decoration: none;
+}
+.playlist{
+    display: block;
+    width:100%;
+}
+/* Playlist style */
+.playlist ul li{
+    display: block;
+    border-bottom: 1px solid black;
+    transform: translate3d(0,0,0);
+    opacity:1;
+}
+.playlist.loading ul li{
+    transform: translate3d(100%,0,0);
+    opacity:0;
+}
+.playlist ul li a{
+    height: 57px;
+    display: block;
+    color: white;
+}
+.playlist ul li a.active{
+    background-color: rgba(0,0,0, 0.5);
+    color: #42A5F5;
+}
+.playlist .metatag .title{
+    font-size: 16px;
+    white-space: nowrap;
+}
+.playlist .metatag.playlist{
+    float:left;
+    padding:10px;
+    width: 87.3%;
+    overflow: hidden;
+}
+.playlist .metatag .artist{
+    font-size: 14px;
+    white-space: nowrap;
+}
+.playlist .cover{
+    height:100%;
+    max-width:8%;
+}
+/* Player Control style */
+.player-control{
+    display: flex;
+    flex-basis: 33.3333333%;
+    align-items: center;
+    align-self: baseline;
+    width:134px;
+}
+/* to prevent SidingUpPanel not moving when we drag it
+*  we need to set pointer-events to none.*/
+.player-control.header{
+    pointer-events: none;
+    height: 100%;
+    padding: 0 0.5em;
+    float: right;
+}
+
+.player-control.content{
+    height: 64px;
+    margin: 0 auto !important;
+    pointer-events: none;
+}
+/* because it's a link with fake href set user-select to none and
+*  retrive all pointer-events */
+.player-control a{
+    pointer-events: all;
+    user-select: none;
+}
+.player-control img{
+    margin: auto 0;
+    width:100%;
+    pointer-events: none;
+}
+.play-btn img{
+    width: 50px;
+    height: 50px;
+}
+.next-btn img{
+    width: 30px;
+    height: 30px;
+}
+.prev-btn img{
+    width: 40px;
+    height: 40px;
+}
+/* Meta style General*/
+.meta{
+    pointer-events: none;
+    color: #FFF;
+}
+.meta .title{
+    font-size: 16px;
+    white-space: nowrap;
+    display: inline-block;
+    position: relative;
+    left:0px;
+}
+.meta .artist{
+    font-size: 14px;
+    white-space: nowrap;
+}
+.marquee-title{
+    display: inline-block;
+    transition: transform 20s linear infinite;
+    animation: marquee2 20s linear infinite;
+}
+.marquee-artist{
+    display: inline-block;
+    transition: transform 20s linear infinite;
+    animation: marquee 20s linear infinite;
+}
+/* Meta style for sliding-up-panel-header*/
+.meta.header{
+    display: flex;
+    flex-flow: row wrap;
+    float:left;
+    margin:15px;
+    max-width: 200px;
+    overflow: hidden;
+}
+
+/* Meta style for sliding-up-panel-body*/
+.meta.content{
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    margin: 1.5em auto;
+    max-width: 200px;
+    overflow: hidden;
+    text-align: center;
+}
+
+/* Coverart style*/
+img.coverart{
+    display: hidden;
+}
+img.coverart.header[src]{
+    float: left;
+    pointer-events: none;
+    height:100%;
+    max-width: 70px;
+    border: none;
+}
+img.coverart.content[src]{
+    display: block;
+    margin: 0.5em auto;
+    height:50%;
+    border: none;
+}
+
+.preloader{
+    position: absolute;
+    width:46px;
+    height:46px;
+    top:calc(50% - 23px);
+    left:calc(50% - 23px);
+    background-image: url(../assets/img/ajax-loader.gif);
+}
+
+/* Keyframes animation */
+@keyframes marquee {
+  0%  {
+    transform:translateX(-25%);
+  }
+  25% {
+    transform:translateX(-50%);
+  }
+  50% {
+    transform:translateX(-25%);
+  }
+  75% {
+    transform:translateX(0%);
+  }
+  100%{
+    transform:translateX(-25%);
+  }
+}
+@keyframes marquee2 {
+  0%  {
+    transform:translateX(0%);
+  }
+  25% {
+    transform:translateX(-25%);
+  }
+  50% {
+    transform:translateX(-50%);
+  }
+  75% {
+    transform:translateX(-25%);
+  }
+  100%{
+    transform:translateX(0%);
+  }
+}

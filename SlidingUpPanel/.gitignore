@@ -1,0 +1,3 @@
+client/songs/*.mp3
+client/songs/*.m4a
+node_modules
