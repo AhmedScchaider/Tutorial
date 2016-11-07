@@ -1,0 +1,238 @@
+/**
+* Copyright 2016 Nerdiex All rights reserved.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
+
+html,body{
+    padding:0px;
+    margin:0px;
+    font-family:san-serif;
+    background-color: #eee;
+}
+*{
+    box-sizing:border-box;
+}
+a,a:active,a:hover{
+    outline:0;
+    text-decoration: none;
+}
+
+.content{
+    display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+
+	align-items: center;
+    -webkit-box-pack: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex-flow: column wrap;
+    height:100vh;
+}
+/* Buttton container Style */
+.morpher{
+    color: #2196F3;
+    align-items: center;
+    background-color: #FFF;
+    display: flex;
+    -webkit-box-flex: 0;
+    justify-content: center;
+    flex: none;
+    min-height: 48px;
+    min-width: 48px;
+    overflow: visible;
+    border-radius: 25px;
+    transform: scale3d(1,1,1);
+    -webkit-transform: scale3d(1,1,1);
+}
+.card {
+    transform: scale3d(7,10,1);
+    -webkit-transform: scale3d(7,10,1);
+    border-radius: 1px;
+    box-shadow: 0 3px 4px rgba(0,0,0,0.3);
+}
+/* Buttton Style */
+.btn{
+    color: #2196F3;
+    background-color: #FFF;
+    text-decoration: none;
+    display: flex;
+    text-align: center;
+    border-radius: 25px;
+    padding: 1em 5em;
+    overflow: visible;
+    border: none;
+}
+.circle-button{
+    width: 50px;
+    height:50px;
+    padding: 1em !important;
+    border-radius: 50%;
+
+}
+.icon{
+    z-index: 999;
+}
+.listening{
+    position: relative;
+}
+.listening::before,
+.listening::after {
+    z-index: -999;
+	content: '';
+    position: absolute;
+    top: calc((100%/2) - 24px);
+    left: calc((100%/2) - 24px);
+    height: 48px;
+    width: 48px;
+	pointer-events: none;
+	opacity: 0.7;
+	border: 1px solid rgba(255, 255, 255, 0.7);
+	border-radius: 50%;
+}
+
+.listening::before,
+.listening::after {
+	-webkit-animation: anim-ripple 1.2s ease-out infinite forwards;
+	animation: anim-ripple 1.2s ease-out infinite forwards;
+}
+.listening::after {
+	-webkit-animation-delay: 0.6s;
+	animation-delay: 0.6s;
+}
+
+/* Player Style */
+.cover{
+    display: none;
+    margin-top: -1px;
+    width:300px;
+    height:200px;
+    flex: none;
+	border-radius: 5px 5px 0 0;
+}
+
+.button--close {
+    position: absolute;
+	z-index: 10;
+	top: 0px;
+	right: 0px;
+	left: auto;
+	width: 40px;
+	height: 40px;
+	padding: 10px;
+	color: #eee;
+    pointer-events: all;
+    text-decoration: none;
+}
+
+.button--close:hover,
+.button--close:focus {
+	color: #ddd;
+}
+.player {
+	position: absolute;
+    width:calc(50px * 7);
+    height:calc(50px * 10);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    pointer-events: none;
+	opacity: 0;
+}
+.player::after {
+	content: '';
+	position: absolute;
+	pointer-events: none;
+	border-radius: 5px 5px 0 0;
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
+}
+.player--visible {
+	pointer-events: none;
+	-webkit-transition: opacity 0.5s linear 0.2s;
+	transition: opacity 0.5s linear 0.2s;
+    opacity: 1;
+}
+.player__cover {
+	margin-top: -1px;
+    width:100%;
+    max-height: 300px;
+    overflow: hidden;
+	border-radius: 5px 5px 0 0;
+}
+
+.player__meta {
+    position: absolute;
+    width: 100%;
+    bottom:20px;
+	padding: 0 1em 1em;
+	text-align: center;
+}
+
+.player__track {
+	font-size: 1.15em;
+	margin: 1.25em 0 0.05em 0;
+	color: #55656c;
+}
+
+.player__album {
+
+	font-size: 12px;
+	margin: 0;
+	color: #bbc1c3;
+}
+
+.player__album-name,
+.player__artist {
+	color: #adb5b8;
+}
+
+/* Keyframes Animation */
+@-webkit-keyframes anim-ripple {
+	0% {
+		opacity: 0;
+		-webkit-transform: scale3d(1, 1, 1);
+		transform: scale3d(1, 1, 1);
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+        -webkit-transform: scale3d(3, 3, 1);
+		transform: scale3d(3, 3, 1);
+
+	}
+}
+
+@keyframes anim-ripple {
+	0% {
+		opacity: 0;
+		-webkit-transform: scale3d(1, 1, 1);
+		transform: scale3d(1, 1, 1);
+	}
+	50% {
+		opacity: 0.7;
+	}
+	100% {
+		opacity: 0;
+        -webkit-transform: scale3d(3, 3, 1);
+		transform: scale3d(3, 3, 1);
+
+	}
+}
