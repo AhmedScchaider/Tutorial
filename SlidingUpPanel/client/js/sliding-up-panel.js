@@ -57,13 +57,11 @@ class SlidingUpPanel{
         {
             detail:
             {
-                message: "Hello There",
-                target:this.slidingPanel,
                 header:this.panelHeader,
                 body:this.panelBody,
                 time: new Date()
             },
-
+            target:this.slidingPanel,
             bubbles: true,
             cancelable: true
         });
@@ -71,11 +69,10 @@ class SlidingUpPanel{
         {
             detail:
             {
-                message: "Hello There",
+                target:this.slidingPanel,
+                header:this.panelHeader,
                 time: new Date()
             },
-            target:this.slidingPanel,
-            header:this.panelHeader,
             body:this.panelBody,
             bubbles: true,
             cancelable: true
@@ -84,12 +81,11 @@ class SlidingUpPanel{
         {
             detail:
             {
-                message: "Hello There",
+                header:this.panelHeader,
+                body:this.panelBody,
                 time: new Date()
             },
             target:this.slidingPanel,
-            header:this.panelHeader,
-            body:this.panelBody,
             bubbles: true,
             cancelable: true
         });

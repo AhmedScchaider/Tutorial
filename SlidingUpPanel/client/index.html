@@ -53,6 +53,10 @@
         <audio id="player" src="" style="display:hidden;"></audio>
         <div class="preloader"></div>
         <script>
+        var panel = document.querySelector('#sliding-up-panel');
+        panel.addEventListener('onpanelcollapsed',function(e){
+            console.log('panel collapsed',e)
+        });
         </script>
         <script src="js/jsmediatags.js"></script>
         <script src="js/sliding-up-panel.js"></script>
