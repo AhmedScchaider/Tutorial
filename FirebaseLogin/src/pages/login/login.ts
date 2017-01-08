@@ -36,7 +36,8 @@ export class LoginPage implements OnInit{
 				email:response.auth.email,
 				picture:response.auth.photoURL
 			};
-			self.navCtrl.pop();
+      window.localStorage.setItem('user',JSON.stringify(user));
+      self.navCtrl.pop();
 		}).catch(function(error){
 			console.log(error);
 		});
