@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      {{name}}
+    </ion-title>
+     <ion-buttons end (click)="saveUser($event)">
+      <button ion-button icon-only>
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="padding">
+  <form id="add-user-form" method="get" action="#">
+    <ion-list inset>
+        <input id="name" type="text" value="{{user.name}}" />
+        <input name="address" id="address" placeholder="Address" ng-reflect-type="text" type="text" value="{{user.address}}">
+        <input type="file" id="image" />
+        <input id="phone" placeholder="Phone" type="number" value="{{user.phone}}">
+        <input id="email" placeholder="E-mail" type="email" value="{{user.email}}">
+    </ion-list>
+  </form>
+</ion-content>

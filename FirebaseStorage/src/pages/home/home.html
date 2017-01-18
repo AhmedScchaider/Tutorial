@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      User Management
+    </ion-title>
+     <ion-buttons end (click)="addUser($event)">
+      <button ion-button icon-only>
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let user of users | async">
+      <ion-item (click)="viewUserDetail(user.$key)">
+        <ion-avatar item-left>
+          <img src="{{user.image}}">
+        </ion-avatar>
+        <h2>{{user.name}}</h2>
+      </ion-item>
+      <ion-item-options side="right">
+        <button ion-button color="primary" (click)="deleteUser(user.$key)">
+          <ion-icon name="trash"></ion-icon>
+          Delete
+        </button>
+        <button ion-button color="primary" (click)="editUser(user.$key)">
+          <ion-icon name="md-create"></ion-icon>
+          Edit
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
