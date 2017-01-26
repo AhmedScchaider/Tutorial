@@ -22,9 +22,8 @@ class SideNav extends HTMLElement{
     }
     set navigationWidth(v){
         if(!isNaN(v)){
-            this._navigationWidth = v;
+            this._navigationWidth = parseInt(v);
             if(!this.navigation) return;
-            // this.setAttribute('navigation-width',v);
             this.navigation.style.width = `${v}px`;
         }else{
             console.warn('navigation-width','value is not a valid number!');
@@ -35,14 +34,13 @@ class SideNav extends HTMLElement{
     }
     set width(v){
         if(!isNaN(v)){
-            this._width = v;
-            // this.setAttribute('width',v);
+            this._width = parseInt(v);
         }else{
             console.warn('width','value is not a valid number!');
         }
     }
     get range(){
-        return this._range;
+        return (this._range !== undefined) ? this._range : 100;
     }
     set range(v){
         if(!isNaN(v)){
@@ -86,7 +84,6 @@ class SideNav extends HTMLElement{
     }
     addEventListeners(){
         this.toggleBtn.addEventListener('click',this.toggleNavigation.bind(this));
-        this.toggleBtn.addEventListener('touchstart',this.toggleNavigation.bind(this));
 
         this.navigation.addEventListener('touchstart',this.onNavigationTouchStart,false);
         this.navigation.addEventListener('touchmove',this.onNavigationTouchMove,false);
@@ -106,24 +103,21 @@ class SideNav extends HTMLElement{
     registerListener(){
         this.onNavigationMove = new CustomEvent("onnavigationmove",
         {
-            detail:
-            {
+            detail:{
                 target:this.navigation,
                 time: new Date()
             }
         });
         this.onNavigationCollapsed = new CustomEvent("onnavigationcollapsed",
         {
-            detail:
-            {
+            detail:{
                 target:this.navigation,
                 time: new Date()
             }
         });
         this.onNavigationExpanded = new CustomEvent("onnavigationexpanded",
         {
-            detail:
-            {
+            detail:{
                 target:this.navigation,
                 time: new Date()
             }
@@ -133,6 +127,7 @@ class SideNav extends HTMLElement{
         console.log('click target',e.target);
     }
     toggleNavigation(e){
+        console.log('toggleBtn clicked',e);
         let width;
         if(!this.opened){
             width = this.navigationWidth;
@@ -147,12 +142,16 @@ class SideNav extends HTMLElement{
 
     }
     onNavigationTouchStart(evt){
+        
         if(this.target) return;
-        //set startY to current touched/clicked Y position on page
+        if(!evt.target.hasAttribute('navigation') && !evt.target.hasAttribute('content')) {
+            return;
+        }
+        //set startX to current touched/clicked X position on page
         this.startX = evt.pageX || evt.touches[0].pageX;
-        //set currentY equal to startY
+        //set currentX equal to startX
         this.currentX = this.startX;
-        if(evt.target === this.mainContent && this.startX >= (parseInt(this.navigationWidth) + parseInt(this.range))){
+        if(evt.target.hasAttribute('content') && this.startX >= (parseInt(this.navigationWidth) + parseInt(this.range))){
             console.log('cancel moving navigation');
             return;
         }
@@ -161,9 +160,9 @@ class SideNav extends HTMLElement{
         this.targetBCR = this.target.getBoundingClientRect();
         
         
-        //set draggingHeader to true
+        //set dragging to true
         this.draggingNavigation = true;
-        /* because we will change the panel position based on Y axis using translateY
+        /* because we will change the panel width based on X axis using translateY
         *  set property will-change to transform */
         this.navigation.style.willChange = 'width';
 
@@ -172,45 +171,43 @@ class SideNav extends HTMLElement{
     onNavigationTouchMove(evt){
         if (!this.target)
             return;
-        var temp = evt.pageX || evt.touches[0].pageX;
         //set currentY to current touched/clicked Y position on page when we drag the header
-        this.currentX = (this.currentX !== temp) ? evt.pageX || evt.touches[0].pageX : this.currentX;
+        this.currentX = evt.pageX || evt.touches[0].pageX;
         this.dispatchEvent(this.onNavigationMove);
-        // console.log('navigationmove',this.currentX);
     }
     onNavigationTouchEnd(){
         if (!this.target)
             return;
 
         this.targetX = 0;
-        //create new variable screenY and set current header panel position to it.
+        //create new variable screenX and set current header panel position to it.
         let screenX = this.currentX - this.startX;
         /* threshold variable is used to check if user has drag more then 1/4 of panel height size
         *  you can change this to half or whatever you want the slider to be expanded or not
         *  when user drag more than threshold */
         const threshold = this.navigationBCR.width * 0.5;
         if (Math.abs(screenX) > threshold) {
-            /* set targetY to panel bounding client rectangle height subtract by panel header height if screenY is
+            /* set targetX to panel bounding client rectangle height subtract by panel header height if screenY is
             *  positive value and set to negative value of panel bounding client rectangle height add by
             *  panel header height */
             this.targetX = (screenX > 0) ?
                 (this.navigationBCR.width) :
                 (-this.navigationBCR.width);
         }
-        //set draggingHeader to false
+        //set dragging to false
         this.draggingNavigation = false;
     }
     calculateMinWidth(){
         var items = this.sidenavContent.children;
         items = Array.from(items);
-        return items[0].querySelector('[icon]').offsetWidth;
+        return (items.length) ? items[0].querySelector('[icon]').offsetWidth :this.toggleBtn.offsetWidth;
     }
     attachedCallback(){
         console.log('attached');
     }
     connectedCallback(){
         this.navigationWidth = this.getAttribute('navigation-width');
-        this.opened = (this.hasAttribute('opened') || this.navigation.width !== this.minWidth) ? true : false;
+        this.opened = (this.hasAttribute('opened') || this.navigation.offsetWidth !== parseInt(this.minWidth)) ? true : false;
         this.style.opacity = 1;
         this.sidenavHeader.style.width = `${this.navigationWidth}px`;
         this.mainContent.style.width = `calc(100% - ${this.navigationWidth}px)`;
@@ -240,7 +237,6 @@ class SideNav extends HTMLElement{
         }
 	}
     moveNavigationIntoPosition(width){
-        
         var nav  = this.navigation;
         const onTransitionEnd = evt => {
             nav.style.transition = '';
@@ -254,7 +250,7 @@ class SideNav extends HTMLElement{
         nav.addEventListener('transitionend',onTransitionEnd);
         nav.style.transition = 'width ease-in-out 200ms';
         nav.style.width = `${width}px`;
-         // user has finish dragging the header, set target to null
+         // user has finish dragging, set target to null
         if(!this.draggingNavigation)
             this.target = null;
     }
@@ -266,9 +262,10 @@ class SideNav extends HTMLElement{
         this.screenX = this.currentX - this.startX ;
         let currentWidth = parseInt(this.navigation.style.width.replace('px',''));
          
-        /* create new variable to and set the value to where we want the sliding panel to move based on Y axis.
-        *  if current panel state is expanded then we move it to expandedY add by screenY
-        *  if not then use screenY instead */
+        /* create new variable width and set the value to where we want the sideNav width to change based on X axis.
+        *  if current state is opened then change the width to navigationWidth add by screenX if screenX is positive value
+        *  and navigationWidth substract by absolute value of screenX if screenX is negative value
+        *  if current state is not opened use minWidth rather than navigationWidth */
         let width;
         if(this.opened){
             width = (this.screenX > 0 ) ? parseInt(this.navigationWidth) + Math.abs(this.screenX) : parseInt(this.navigationWidth) - Math.abs(this.screenX);
@@ -280,7 +277,7 @@ class SideNav extends HTMLElement{
         if(width < this.minWidth) width = parseInt(this.minWidth);
         
         this.target.style.width = `${width}px`;
-        // Check if user still dragging the header or not, if true don't execute the next code.
+        // Check if user still dragging or not, if true don't execute the next code.
         if (this.draggingNavigation)
             return;
         const navigation = this.target;
