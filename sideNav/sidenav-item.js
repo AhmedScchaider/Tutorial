@@ -24,7 +24,12 @@ class SideNavItem extends HTMLElement{
     findSideNav(el){
         var sidenav = el;
         while(sidenav.nodeName.toLowerCase() !== 'side-nav'){
-            sidenav = sidenav.parentNode;
+            if(sidenav.parentNode){
+              sidenav = sidenav.parentNode;
+            }else{
+              sidenav = null;
+              break;
+            }
         }
         return sidenav;
     }
