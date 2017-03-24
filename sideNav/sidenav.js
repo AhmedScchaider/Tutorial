@@ -112,14 +112,14 @@ class SideNav extends HTMLElement{
         {
             detail:{
                 target:this.navigation,
-                time: new Date()
+                timestamp: Math.floor(Date.now()/1000)
             }
         });
         this.onNavigationExpanded = new CustomEvent("onnavigationexpanded",
         {
             detail:{
                 target:this.navigation,
-                time: new Date()
+                timestamp: Math.floor(Date.now()/1000)
             }
         });
     }
